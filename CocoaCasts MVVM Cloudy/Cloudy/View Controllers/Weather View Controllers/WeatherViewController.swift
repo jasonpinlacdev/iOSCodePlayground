@@ -10,8 +10,6 @@ import UIKit
 
 class WeatherViewController: UIViewController {
 
-    // MARK: - Properties
-
     @IBOutlet var messageLabel: UILabel!
     @IBOutlet var weatherDataContainerView: UIView!
     @IBOutlet var activityIndicatorView: UIActivityIndicatorView!

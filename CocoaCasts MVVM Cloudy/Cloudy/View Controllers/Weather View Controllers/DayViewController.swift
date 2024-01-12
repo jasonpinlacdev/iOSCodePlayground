@@ -15,8 +15,6 @@ protocol DayViewControllerDelegate: AnyObject {
 
 class DayViewController: WeatherViewController {
 
-    // MARK: - Properties
-
     @IBOutlet var dateLabel: UILabel!
     @IBOutlet var timeLabel: UILabel!
     @IBOutlet var windSpeedLabel: UILabel!
@@ -24,11 +22,7 @@ class DayViewController: WeatherViewController {
     @IBOutlet var descriptionLabel: UILabel!
     @IBOutlet var iconImageView: UIImageView!
 
-    // MARK: -
-
     weak var delegate: DayViewControllerDelegate?
-
-    // MARK: -
 
     var now: WeatherData? {
         didSet {
@@ -36,13 +30,9 @@ class DayViewController: WeatherViewController {
         }
     }
 
-    // MARK: - Public Interface
-
     override func reloadData() {
         updateView()
     }
-
-    // MARK: - View Methods
 
     private func updateView() {
         activityIndicatorView.stopAnimating()
@@ -55,8 +45,6 @@ class DayViewController: WeatherViewController {
             messageLabel.text = "Cloudy was unable to fetch weather data."
         }
     }
-
-    // MARK: -
 
     private func updateWeatherDataContainerView(with weatherData: WeatherData) {
         weatherDataContainerView.isHidden = false
@@ -96,8 +84,6 @@ class DayViewController: WeatherViewController {
         
         iconImageView.image = imageForIcon(withName: weatherData.icon)
     }
-
-    // MARK: - Actions
 
     @IBAction func didTapSettingsButton(sender: UIButton) {
         delegate?.controllerDidTapSettingsButton(controller: self)

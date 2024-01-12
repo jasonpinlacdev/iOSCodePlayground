@@ -9,6 +9,21 @@
 import UIKit
 import CoreLocation
 
+
+
+
+
+/*
+ Root view controller is responsible for...
+ 1) fetching the weather data
+ 2) fetching the current location of the user's device
+ 3) sending the weather data to its child view controllers
+ 
+ by delegating the fetching of the weather data to the DataManager class, the DataManager class sends the request to the weather API and converts the JSON response to model objects. The DataManager's method - weatherDataForLocation(latitude:longitude:completion) is invoked from the RootViewController and the completionHandler is implemented from the RootViewController. This completionHandler receives the weather data and passes it to the Day and Week viewControllers.
+ */
+
+
+
 final class RootViewController: UIViewController {
 
     // MARK: - Types
