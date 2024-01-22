@@ -14,23 +14,15 @@ protocol WeekViewControllerDelegate: AnyObject {
 
 class WeekViewController: WeatherViewController {
 
-    // MARK: - Properties
-
     @IBOutlet var tableView: UITableView!
-
-    // MARK: -
 
     weak var delegate: WeekViewControllerDelegate?
     
-    // MARK: -
-
     var week: [WeatherDayData]? {
         didSet {
             updateView()
         }
     }
-
-    // MARK: -
 
     private lazy var dayFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
@@ -44,42 +36,17 @@ class WeekViewController: WeatherViewController {
         return dateFormatter
     }()
 
-    // MARK: - View Life Cycle
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Setup View
         setupView()
     }
-
-    // MARK: - Public Interface
-
-    override func reloadData() {
-        updateView()
-    }
     
-    // MARK: - View Methods
-
     private func setupView() {
         setupTableView()
         setupRefreshControl()
     }
-
-    private func updateView() {
-        activityIndicatorView.stopAnimating()
-        tableView.refreshControl?.endRefreshing()
-
-        if let week = week {
-            updateWeatherDataContainerView(with: week)
-
-        } else {
-            messageLabel.isHidden = false
-            messageLabel.text = "Cloudy was unable to fetch weather data."
-        }
-    }
-
-    // MARK: -
 
     private func setupTableView() {
         tableView.separatorInset = UIEdgeInsets.zero
@@ -88,26 +55,35 @@ class WeekViewController: WeatherViewController {
     private func setupRefreshControl() {
         // Initialize Refresh Control
         let refreshControl = UIRefreshControl()
-
         // Configure Refresh Control
         refreshControl.addTarget(self, action: #selector(WeekViewController.didRefresh(sender:)), for: .valueChanged)
-
         // Update Table View)
         tableView.refreshControl = refreshControl
     }
-
-    // MARK: -
-
+    
     private func updateWeatherDataContainerView(with weatherData: [WeatherDayData]) {
         // Show Weather Data Container View
         weatherDataContainerView.isHidden = false
-
         // Update Table View
         tableView.reloadData()
     }
+    
+    override func reloadData() {
+        updateView()
+    }
+    
+    private func updateView() {
+        activityIndicatorView.stopAnimating()
+        tableView.refreshControl?.endRefreshing()
+        if let week = week {
+            updateWeatherDataContainerView(with: week)
+        } else {
+            messageLabel.isHidden = false
+            messageLabel.text = "Cloudy was unable to fetch weather data."
+        }
+    }
 
     // MARK: - Actions
-
     @objc func didRefresh(sender: UIRefreshControl) {
         delegate?.controllerDidRefresh(controller: self)
     }
@@ -115,7 +91,7 @@ class WeekViewController: WeatherViewController {
 }
 
 extension WeekViewController: UITableViewDataSource {
-
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         week == nil ? 0 : 1
     }
@@ -124,7 +100,6 @@ extension WeekViewController: UITableViewDataSource {
         guard let week = week else {
             return 0
         }
-        
         return week.count
     }
 
@@ -164,7 +139,6 @@ extension WeekViewController: UITableViewDataSource {
 
             cell.iconImageView.image = imageForIcon(withName: weatherData.icon)
         }
-
         return cell
     }
 
